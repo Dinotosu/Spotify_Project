@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
-import { getPlaylist } from "../api/api";
+import { getPlaylist, getCategories } from "../api/api";
 import TheSidebar from "../components/TheSidebar";
 import TheHeader from "../components/TheHeader";
 import TheSidebarOverlay from "../components/TheSidebarOverlay";
 import Playlist from "../components/Playlist";
 import { useRef } from "react";
 import PlaylistCover from "../components/PlaylistCover";
-import Tracks from "../components/Tracks";
 import SpotifyPlayer from "react-spotify-web-playback";
 import Track from "../components/Track";
-import trackProps from "../helpers/trackProps";
+import PlaylistTitle from "../components/PlaylistTitle";
+import PlaylistDescription from "../components/PlaylistDescription";
 
 export default function PlaylistPage() {
   let [playlist, setPlaylist] = useState({});
   let [tracks, setTracks] = useState([]);
   let [tracksIDs, setTracksIDs] = useState([]);
+
   const contentWrapperRef = useRef();
   const popoverRef = useRef();
   const toastRef = useRef();
@@ -41,6 +42,16 @@ export default function PlaylistPage() {
     }
   };
 
+  const fetchDataCategorie = async () => {
+    try {
+      let response = await getCategories();
+      //console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const tracksID = async () => {
     return await playlist.tracks.items.reduce((acc, item) => {
       console.log("item", item);
@@ -59,7 +70,8 @@ export default function PlaylistPage() {
       setPlaylist(DATA);
       setTracks(data.tracks.items);
     };
-    getData(selectedTracks);
+
+    getData();
     //tracksID();
     setTracksIDs(setTracksIDs());
   }, []);
@@ -68,10 +80,21 @@ export default function PlaylistPage() {
     console.log("playlist", playlist);
     console.log("tracks", tracks);
     console.log("tracksIDs", tracksIDs);
+
     //console.log(playlist.images[0].url);
   }, []);
 
-  //console.log("tracks", playlist.tracks);
+  const imagesUrl = (i) => {
+    if (!!i) {
+      return i[0];
+    } else {
+      return "./";
+    }
+  };
+
+  const i = imagesUrl(playlist.images);
+
+  //console.lo("tracks", playlist.tracks);
 
   //overflow-auto
 
@@ -82,8 +105,25 @@ export default function PlaylistPage() {
         <TheSidebarOverlay />
         <div className="overflow-auto flex-1 w-full h-full justify-center items-center">
           <TheHeader className="w-full" />
-          <Playlist className="" {...playlist} />
-          <div className="flex gap-5 flex-col ">
+          <div className="flex flex-row m-20 text-gray-200">
+            <PlaylistCover className="w-60" url={i} />
+            <div className="">
+              <h1 className="text-8xl font-black mb-10">{playlist.name}</h1>
+              <PlaylistDescription description={playlist.description} />
+              <div className="flex flex-row h-6 text-xs gap-1 items-between">
+                {/*                 {tracks[0].track.artists.map((artist, index) => (
+                  <p key={index} className="">
+                    {index !== tracks[0].track.artists.length - 1
+                      ? artist.name + ", "
+                      : artist.name}
+                  </p>
+                ))} */}
+              </div>
+            </div>
+          </div>
+
+          {/* <Playlist className="" {...playlist} /> */}
+          <div className="flex flex-col ">
             {tracks.map((track, index) => (
               <Track
                 handleTrackClick={handleTrackClick}

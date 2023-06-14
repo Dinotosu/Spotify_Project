@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Playlist from "./pages/PlaylistPage";
 import PlaylistPage from "./pages/PlaylistPage";
+import Search from "./pages/Search";
+import Library from "./pages/Library";
 
 function App() {
   /*   const navigate = useNavigate();
@@ -25,6 +27,9 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/playlists/:id" element={<PlaylistPage />} />
+        <Route path="/browse/categories/" element={<PlaylistPage />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/library" element={<Library />} />
       </Routes>
     </Router>
   );

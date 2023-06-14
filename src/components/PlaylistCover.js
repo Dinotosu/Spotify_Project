@@ -1,5 +1,5 @@
 function PlaylistCover({ url }) {
-  //console.log("url", url);
+  console.log("url", url);
   return (
     <div className="flex w-full h-full">
       <img

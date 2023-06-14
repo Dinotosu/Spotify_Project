@@ -12,7 +12,7 @@ export default function Track({ name, album, artists, uri, handleTrackClick }) {
   return (
     <div
       onClick={handleClick}
-      className="flex rounded-md h-20 flex-row justify-start text-neutral-600 bg-zinc-900"
+      className="flex rounded-xl h-20 flex-row justify-start text-neutral-600 bg-neutral-900 m-2"
     >
       <div className="flex w-3/12 ">
         <img src={album.images[0].url} className="w-15 h-15" alt="" />
